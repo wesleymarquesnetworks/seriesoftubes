@@ -1778,6 +1778,7 @@
 "dashboard.of_g_wanted":"de {g} deseados",
 "dashboard.pops_and_routers":"POPs y routers",
 "dashboard.regional_broadband_levy":"Gravamen regional de banda ancha",
+"dashboard.search_pop_or_location":"Buscar POP o instalación...",
 "dashboard.the_long_tail_n_small_networks":"La cola larga ({n} redes pequeñas)",
 "dashboard.the_networks_you_pay_transit_to":"Las redes a las que pagas tránsito para llegar, de mayor a menor, y la forma más barata de pasar cada una a peering. Es tu lista de tareas rumbo al Tier 1.",
 "dashboard.traffic_by_network_asn":"Tráfico por red (ASN)",

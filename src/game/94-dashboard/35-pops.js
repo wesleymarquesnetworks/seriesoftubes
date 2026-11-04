@@ -2,6 +2,8 @@
    List of every POP in your network with router load, generator, metro diversity (sites A and B),
    breakouts and jump to the city panel. */
 
+const foldP=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+
 function popStats(){const pops=Object.keys(S.pops);let routers=0,site2=0,gen=0,attention=0;
   for(const c of pops){const p=S.pops[c];routers+=p.routers||1;if(p.site2)site2++;if(p.gen)gen++;
     const cap=R.nodeCap[c]||nodeCap(c)||1,load=R.nodeLoad[c]||0;
@@ -14,15 +16,16 @@ function popsSection(){const pops=Object.keys(S.pops);
   if(!pops.length)return h+`<p class="empty">${tr('dashboard.no_pops_matching_filter')}</p></div>`;
   const st=popStats();
   h+=`<div class="dgrid" style="margin:0 0 8px"><div class="tile"><div class="lbl">${tr('common.pops')}</div><div class="val">${st.n}</div><div class="sub">${st.routers} ${tr('common.routers').toLowerCase()}</div></div><div class="tile"><div class="lbl">${tr('common.metro_diversity')}</div><div class="val" style="color:var(--pni,#7B61FF)">${st.site2}</div><div class="sub">${tr('common.dual_site')}</div></div><div class="tile"><div class="lbl">${tr('common.backup_generator')}</div><div class="val" style="color:var(--eye,#16A866)">${st.gen}</div><div class="sub">${tr('common.has_generator')}</div></div><div class="tile"><div class="lbl">${tr('dashboard.attention_n',{n:st.attention})}</div><div class="val" style="color:${st.attention?'var(--bad,#FF4D5E)':'inherit'}">${st.attention}</div><div class="sub">${tr('city_panel.router_maxed_out')} / ${tr('common.down')}</div></div></div>`;
-  const F=UI.pf||{};
+  const F=UI.pf||{},qStr=F.q?foldP(F.q):'';
   const filterMatch=c=>{const p=S.pops[c];
     if(F.f==='attn'){const cap=R.nodeCap[c]||nodeCap(c)||1,load=R.nodeLoad[c]||0;if(!((load/cap)>=0.8||(p.down>S.day)||siteDown(c,'a')||(p.site2&&siteDown(c,'b'))))return false;}
     else if(F.f==='site2'){if(!p.site2)return false;}
     else if(F.f==='nogen'){if(p.gen)return false;}
     if(F.reg&&CITY[c].reg!==F.reg)return false;
+    if(qStr){const C=CITY[c],m=foldP(C.name).includes(qStr)||foldP(C.cc).includes(qStr)||foldP(siteName(c,'a')).includes(qStr)||(p.site2&&foldP(siteName(c,'b')).includes(qStr))||(C.ix&&foldP(C.ix).includes(qStr));if(!m)return false;}
     return true;};
   const regKeys=[...new Set(pops.map(c=>CITY[c].reg))].sort();
-  h+=`<div class="trsel" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px"><div class="seg">${btn(tr('dashboard.all_n',{n:st.n}),'popF',{v:''},!F.f?'pink sm':'ghost sm')}${btn(tr('dashboard.attention_n',{n:st.attention}),'popF',{v:'attn'},F.f==='attn'?'pink sm':'ghost sm')}${btn(tr('dashboard.dual_site_n',{n:st.site2}),'popF',{v:'site2'},F.f==='site2'?'pink sm':'ghost sm')}${btn(tr('dashboard.no_generator_n',{n:st.n-st.gen}),'popF',{v:'nogen'},F.f==='nogen'?'pink sm':'ghost sm')}</div><label>${tr('common.all_regions')} <select data-chg="popReg"><option value="">${tr('common.all_regions')}</option>${regKeys.map(r=>`<option value="${r}"${F.reg===r?' selected':''}>${esc(REG[r]||r)}</option>`).join('')}</select></label>${F.f||F.reg?btn(tr('common.clear_filters'),'popF',{v:'',reg:''},'ghost sm'):''}</div>`;
+  h+=`<div class="trsel" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px"><div class="seg">${btn(tr('dashboard.all_n',{n:st.n}),'popF',{v:''},!F.f?'pink sm':'ghost sm')}${btn(tr('dashboard.attention_n',{n:st.attention}),'popF',{v:'attn'},F.f==='attn'?'pink sm':'ghost sm')}${btn(tr('dashboard.dual_site_n',{n:st.site2}),'popF',{v:'site2'},F.f==='site2'?'pink sm':'ghost sm')}${btn(tr('dashboard.no_generator_n',{n:st.n-st.gen}),'popF',{v:'nogen'},F.f==='nogen'?'pink sm':'ghost sm')}</div><input class="t" id="popSearchIn" type="search" placeholder="${esc(tr('dashboard.search_pop_or_location'))}" value="${esc(F.q||'')}" style="max-width:180px;padding:3px 8px;font-size:12px" data-chg="popSearch" autocomplete="off" autocapitalize="off" spellcheck="false"><label>${tr('common.all_regions')} <select data-chg="popReg"><option value="">${tr('common.all_regions')}</option>${regKeys.map(r=>`<option value="${r}"${F.reg===r?' selected':''}>${esc(REG[r]||r)}</option>`).join('')}</select></label>${F.f||F.reg||F.q?btn(tr('common.clear_filters'),'popF',{v:'',reg:'',q:''},'ghost sm'):''}</div>`;
   const rows=pops.filter(filterMatch);
   const sk=UI.popSort||'use',dir=UI.popDir!==undefined?UI.popDir:-1;
   const val=c=>{const p=S.pops[c];if(sk==='city')return CITY[c].name.toLowerCase();if(sk==='cap')return R.nodeCap[c]||nodeCap(c)||1;if(sk==='routers')return p.routers||1;const cap=R.nodeCap[c]||nodeCap(c)||1;return (R.nodeLoad[c]||0)/cap;};
@@ -51,3 +54,5 @@ function popsSection(){const pops=Object.keys(S.pops);
   }).join('');
   h+=`</tbody></table></div>`;
   return h+listMore('pops',rows.length,n=>trn('dashboard.n_more_pops',n))+`</div>`;}
+
+document.addEventListener('input',e=>{if(e.target.id!=='popSearchIn')return;UI.pf=UI.pf||{};UI.pf.q=e.target.value;listReset('pops');renderDash();const el=$('popSearchIn');if(el){el.focus();el.selectionStart=el.selectionEnd=el.value.length;}});

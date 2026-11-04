@@ -1780,6 +1780,7 @@
 "dashboard.of_g_wanted":"von {g} gewünscht",
 "dashboard.pops_and_routers":"POPs und Router",
 "dashboard.regional_broadband_levy":"Regionale Breitbandabgabe",
+"dashboard.search_pop_or_location":"POP oder Standort suchen...",
 "dashboard.the_long_tail_n_small_networks":"Der Long Tail ({n} kleine Netze)",
 "dashboard.the_networks_you_pay_transit_to":"Die Netze, für deren Erreichbarkeit du Transit zahlst, die größten zuerst, und der günstigste Weg, jedes davon auf Peering umzustellen. Das ist deine To-do-Liste auf dem Weg zu Tier 1.",
 "dashboard.traffic_by_network_asn":"Traffic nach Netz (ASN)",

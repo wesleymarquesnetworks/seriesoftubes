@@ -1779,6 +1779,7 @@
 "dashboard.of_g_wanted":"of {g} wanted",
 "dashboard.pops_and_routers":"POPs and routers",
 "dashboard.regional_broadband_levy":"Regional broadband levy",
+"dashboard.search_pop_or_location":"Search POP or facility...",
 "dashboard.the_long_tail_n_small_networks":"The long tail ({n} small networks)",
 "dashboard.the_networks_you_pay_transit_to":"The networks you pay transit to reach, biggest first, and the cheapest way to move each one to peering. This is your to-do list on the way to Tier 1.",
 "dashboard.traffic_by_network_asn":"Traffic by network (ASN)",

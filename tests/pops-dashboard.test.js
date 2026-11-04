@@ -52,6 +52,19 @@ test('NOC dashboard POPs view lists all points of presence with status, diversit
   ev("ACT.popF({v:''})");
   assert.equal(getCityNames().length, 4);
 
+  // Search by city name
+  ev("ACT.popSearch({v:'paris'})");
+  assert.deepEqual(getCityNames(), ['Paris']);
+
+  // Search by datacenter/facility name
+  const amsSiteA = ev("siteName('ams', 'a')");
+  ev(`ACT.popSearch({v:'${amsSiteA.slice(0, 5)}'})`);
+  assert.deepEqual(getCityNames(), ['Amsterdam']);
+
+  // Clear search
+  ev("ACT.popSearch({v:''})");
+  assert.equal(getCityNames().length, 4);
+
   // Sort by city name ascending
   ev("ACT.popSort({k:'city'})");
   assert.deepEqual(getCityNames(), ['Amsterdam', 'Frankfurt', 'London', 'Paris']);

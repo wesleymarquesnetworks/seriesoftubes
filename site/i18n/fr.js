@@ -1778,6 +1778,7 @@
 "dashboard.of_g_wanted":"sur {g} demandés",
 "dashboard.pops_and_routers":"POP et routeurs",
 "dashboard.regional_broadband_levy":"Taxe sur le haut débit régional",
+"dashboard.search_pop_or_location":"Rechercher POP ou site...",
 "dashboard.the_long_tail_n_small_networks":"La longue traîne ({n} petits réseaux)",
 "dashboard.the_networks_you_pay_transit_to":"Les réseaux que tu atteins en payant du transit, du plus gros au plus petit, et la façon la moins chère de passer chacun en peering. C’est ta to-do list sur la route du Tier 1.",
 "dashboard.traffic_by_network_asn":"Trafic par réseau (ASN)",
