@@ -79,5 +79,18 @@ test('NOC dashboard POPs view lists all points of presence with status, diversit
   assert.equal(ev("UI.sel.id"), 'ams');
   assert.equal(ev("UI.tab"), 'links');
 
+  // Test direct actions: install generator and add redundant router from dashboard
+  ev("ACT.popOpen()");
+  assert.equal(ev("S.pops.par.gen"), false);
+  assert.equal(ev("S.pops.par.routers || 1"), 1);
+
+  // Install generator in Paris directly
+  ev("ACT.addGen({city:'par'})");
+  assert.equal(ev("S.pops.par.gen"), true);
+
+  // Add redundant router in Paris directly
+  ev("ACT.addRouter({city:'par'})");
+  assert.equal(ev("S.pops.par.routers"), 2);
+
   assert.deepEqual(errors, []);
 });
