@@ -1,4 +1,4 @@
-function dashTabs(){const u=custStats().unhappy,cur=UI.dtab||'overview',L={overview:tr('common.overview'),cust:tr('common.customers'),conn:tr('common.connections'),traffic:tr('common.traffic'),infra:tr('common.links_routers'),lease:tr('common.leased_lines')};
+function dashTabs(){const u=custStats().unhappy,cur=UI.dtab||'overview',L={overview:tr('common.overview'),pops:tr('common.pops'),cust:tr('common.customers'),conn:tr('common.connections'),traffic:tr('common.traffic'),infra:tr('common.links_routers'),lease:tr('common.leased_lines')};
   return `<nav class="dtabs">${DTABS.map(k=>`<button class="${cur===k?'on':''}" data-act="dashTab" data-args='{"k":"${k}"}'>${L[k]}${k==='cust'&&u?`<span class="cnt red">${u}</span>`:''}</button>`).join('')}</nav>`;}
 function renderDash(){checkLayer();
   const H=S.hist||[],rows=H.slice(-90),last30=H.slice(-30);
@@ -16,6 +16,7 @@ function renderDash(){checkLayer();
   {const e={c:0,p:0,ix:0,t:0};let w=0;for(const n of NETS)if(n.tail){const x=R.netEg[n.id];if(x)for(const k in e)e[k]+=x[k]||0;w+=R.demTo[n.id]||0;}nets.push(row({id:'_tail',name:tr('dashboard.the_long_tail_n_small_networks',{n:NETS.filter(n=>n.tail).length}),asn:'many',type:'eye',col:'#8A93B8'},e,w));}
   for(let i=nets.length-1;i>=0;i--)if(!(nets[i].t>0.01||nets[i].want>0.01))nets.splice(i,1);
   {const k=UI.dashSort||'traffic',dir=UI.dashDir||-1,val=x=>k==='name'?x.n.name.toLowerCase():k==='asn'?x.n.asn:k==='type'?x.n.type:k==='cost'?x.cost:k==='lost'?x.lost:x.t;nets.sort((a,b)=>{const A=val(a),B=val(b);return (A<B?-1:A>B?1:0)*dir||b.t-a.t;});}
+  if(DT==='pops')h+=popsSection();
   if(DT==='cust')h+=custSection();
   if(DT==='conn')h+=connSection();
   if(DT==='traffic')h+=`<div class="btns">${btn(tr('ops.standing_orders'),'opsOpen',{},'sm')}</div>`;

@@ -1,6 +1,11 @@
 Object.assign(ACT,{
  custGo:({id})=>{const b=S.biz.find(x=>x.id===id);if(!b)return;$('dash').hidden=true;ACT.focusCity({city:b.city});UI.tab='cust';renderPanel();},
- listMore:({k})=>{if(k!=='conn'&&k!=='cust'&&k!=='nets'&&k!=='pni')return;UI.listN=UI.listN||{};UI.listN[k]=listN(k)+LIST_PAGE;if(k==='nets'){renderLeft();return;}if(k==='pni'){renderPanel();return;}renderDash();},
+ listMore:({k})=>{if(k!=='conn'&&k!=='cust'&&k!=='nets'&&k!=='pni'&&k!=='pops')return;UI.listN=UI.listN||{};UI.listN[k]=listN(k)+LIST_PAGE;if(k==='nets'){renderLeft();return;}if(k==='pni'){renderPanel();return;}renderDash();},
+ popGo:({city})=>{if(!isCity(city))return;$('dash').hidden=true;ACT.focusCity({city});UI.tab='links';renderPanel();},
+ popF:({v})=>{UI.pf=UI.pf||{};UI.pf.f=(v==='attn'||v==='site2'||v==='nogen')?v:'';listReset('pops');renderDash();},
+ popReg:({v})=>{UI.pf=UI.pf||{};UI.pf.reg=v||'';listReset('pops');renderDash();},
+ popSort:({k})=>{if(!['city','use','cap','routers'].includes(k))return;listReset('pops');if(UI.popSort===k)UI.popDir=-(UI.popDir||-1);else{UI.popSort=k;UI.popDir=k==='city'?1:-1;}renderDash();},
+ popOpen:()=>{if(!S)return;UI.dtab='pops';listReset('pops');const d=$('dash');d.hidden=false;renderDash();d.scrollTop=0;},
  custF:({v})=>{UI.kf=UI.kf||{};UI.kf.f=(v==='sad'||v==='req')?v:'';listReset('cust');renderDash();},
  custCity:({v})=>{UI.kf=UI.kf||{};UI.kf.city=isCity(v)?v:'';listReset('cust');renderDash();},
  custSort:({k})=>{if(!['mood','bw','mo','name','city'].includes(k))return;listReset('cust');if(UI.custSort===k)UI.custDir=-(UI.custDir||1);else{UI.custSort=k;UI.custDir=(k==='mo'||k==='bw')?-1:1;}renderDash();},

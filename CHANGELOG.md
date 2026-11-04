@@ -6,6 +6,7 @@ All notable changes to this project are documented here. The project follows
 
 ## [Unreleased]
 
+- NOC dashboard POPs tab: review every point of presence across your network in a single list, showing router models and forwarding load, backup generator availability, metro diversity (Site A and B facilities), local transit/peering breakouts, and quick jump navigation.
 - Filter customer contracts by pending requirements: the NOC dashboard Customers tab can now filter contracts down to those whose requirements (such as diverse routes, local transit/IX breakout, or IPv6) are currently unmet.
 - Sort customer contracts by bandwidth: the NOC dashboard Customers tab now supports sorting by contract bandwidth (ascending or descending), with quick sort controls on the mobile card list and a clickable header on the desktop table.
 - The map zooms in twice as far, for crowded regions like New England or around Washington.
